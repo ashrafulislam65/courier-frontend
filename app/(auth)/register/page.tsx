@@ -84,7 +84,10 @@ export default function RegisterPage() {
                 control={control}
                 name="role"
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                   <Select
+                    onValueChange={(value) => value && field.onChange(value)}
+                    defaultValue={field.value}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select role" />
                     </SelectTrigger>

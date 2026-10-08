@@ -70,7 +70,7 @@ export default function CustomerShipmentsView() {
       <div className="flex items-center gap-3">
         <Select
           value={status || 'ALL'}
-          onValueChange={(value) => setStatus(value === 'ALL' ? '' : value)}
+                    onValueChange={(value) => setStatus(!value || value === 'ALL' ? '' : value)}
         >
           <SelectTrigger className="w-full sm:w-56">
             <SelectValue placeholder="Filter by status" />
