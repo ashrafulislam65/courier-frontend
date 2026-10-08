@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Package } from 'lucide-react';
+import { useMounted } from '@/hooks/useMounted';
 
 const roleDashboard: Record<string, string> = {
   ADMIN: '/admin',
@@ -13,6 +14,7 @@ const roleDashboard: Record<string, string> = {
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
+  const mounted = useMounted();
 
   return (
     <nav className="border-b bg-white sticky top-0 z-50">
@@ -31,7 +33,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          {isAuthenticated ? (
+          {mounted && isAuthenticated ? (
             <>
               <Link href={roleDashboard[user?.role || ''] || '/'}>
                 <Button variant="outline" size="sm">Dashboard</Button>
