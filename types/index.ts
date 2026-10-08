@@ -23,6 +23,7 @@ export interface User {
   role: Role;
   isBlocked?: boolean;
   createdAt?: string;
+  courierProfile?: CourierProfile | null;
 }
 
 export interface AuthResponse {
