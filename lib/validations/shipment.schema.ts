@@ -6,7 +6,7 @@ export const createShipmentSchema = z.object({
   recipientName: z.string().min(2, 'Recipient name must be at least 2 characters'),
   recipientPhone: z.string().min(6, 'Please enter a valid phone number'),
   recipientAddress: z.string().min(5, 'Address must be at least 5 characters'),
-  weightKg: z.coerce.number().positive('Weight must be greater than 0'),
+  weightKg: z.number().positive('Weight must be greater than 0'),
 });
 
 export type CreateShipmentFormValues = z.infer<typeof createShipmentSchema>;
