@@ -8,9 +8,11 @@ import {
   Truck,
   BarChart3,
   ScrollText,
+  Users,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { Role } from '@/types';
+
 
 export interface NavItem {
   href: string;
@@ -37,11 +39,12 @@ export const navConfig: Record<Role, { title: string; items: NavItem[] }> = {
       { href: '/provider/profile', label: 'Profile & Availability', icon: UserCircle },
     ],
   },
-  ADMIN: {
+    ADMIN: {
     title: 'Admin Panel',
     items: [
       { href: '/admin', label: 'Overview', icon: BarChart3, exact: true },
-      { href: '/admin/manage', label: 'Manage', icon: ClipboardList },
+      { href: '/admin/manage', label: 'Shipments', icon: ClipboardList },
+      { href: '/admin/users', label: 'Users', icon: Users },
       { href: '/admin/reports', label: 'Audit Logs', icon: ScrollText },
     ],
   },
