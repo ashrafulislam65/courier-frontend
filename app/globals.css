@@ -134,3 +134,52 @@
 .pw input{padding-right:3rem}
 .pw .eye{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:10px;background:none;color:var(--mu);cursor:pointer;display:grid;place-items:center}
 .pw .eye:hover{color:var(--tx);background:var(--s2)}
+/* ---------- Brand theme: deep orange ---------- */
+@theme {
+  --color-brand-50: #fff3ee;
+  --color-brand-100: #ffe4d8;
+  --color-brand-200: #ffc9b0;
+  --color-brand-300: #ffa57a;
+  --color-brand-400: #ff8048;
+  --color-brand-500: #f4511e;
+  --color-brand-600: #e64a19;
+  --color-brand-700: #bf360c;
+  --color-brand-800: #8f2a0a;
+  --color-brand-900: #6b2008;
+  --color-brand-950: #3d1205;
+}
+
+:root {
+  --primary: #e64a19;
+  --primary-foreground: #ffffff;
+  --ring: #e64a19;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
+}
+@keyframes route-flow {
+  to { stroke-dashoffset: -24; }
+}
+
+.animate-fade-up { animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.animate-kenburns { animation: kenburns 9s ease-out both; }
+.route-flow { animation: route-flow 1s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up, .animate-kenburns, .route-flow { animation: none; }
+  html { scroll-behavior: auto; }
+}
+.map-tiles-dark {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.95) saturate(0.6);
+}
