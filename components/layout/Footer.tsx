@@ -1,43 +1,78 @@
 import Link from 'next/link';
-import { Package } from 'lucide-react';
+import { Mail, MapPin, Package, Phone } from 'lucide-react';
+
+const columns = [
+  {
+    title: 'Company',
+    links: [
+      { href: '/about', label: 'About us' },
+      { href: '/services', label: 'Services' },
+      { href: '/contact', label: 'Contact' },
+    ],
+  },
+  {
+    title: 'Shipping',
+    links: [
+      { href: '/track', label: 'Track a shipment' },
+      { href: '/dashboard/shipments/new', label: 'Create a shipment' },
+      { href: '/#faq', label: 'FAQ' },
+    ],
+  },
+  {
+    title: 'Account',
+    links: [
+      { href: '/login', label: 'Login' },
+      { href: '/register', label: 'Sign up' },
+    ],
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-gray-50 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center gap-2 font-bold text-lg mb-2">
-              <Package className="h-5 w-5 text-blue-600" />
-              <span>Courier</span>
+    <footer className="mt-auto bg-slate-950 text-slate-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-5">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600">
+                <Package className="h-5 w-5" />
+              </span>
+              <span className="text-lg font-bold">Courier</span>
             </div>
-            <p className="text-sm text-gray-500">
-              Reliable parcel delivery, tracked end to end.
+            <p className="mt-4 max-w-sm text-sm text-slate-400">
+              Parcel delivery tracked end to end, from the first pickup to the recipient&apos;s
+              door.
             </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-sm">Company</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li><Link href="/about" className="hover:text-blue-600">About</Link></li>
-              <li><Link href="/contact" className="hover:text-blue-600">Contact</Link></li>
+            <ul className="mt-6 space-y-3 text-sm">
+              <li className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-blue-400" /> support@courier.com
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-blue-400" /> +880 1700-000000
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-blue-400" /> Motijheel, Dhaka, Bangladesh
+              </li>
             </ul>
           </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-sm">Services</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li><Link href="/services" className="hover:text-blue-600">Our Services</Link></li>
-              <li><Link href="/track" className="hover:text-blue-600">Track Shipment</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-sm">Account</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li><Link href="/login" className="hover:text-blue-600">Login</Link></li>
-              <li><Link href="/register" className="hover:text-blue-600">Sign Up</Link></li>
-            </ul>
-          </div>
+
+          {columns.map((col) => (
+            <div key={col.title}>
+              <h4 className="mb-4 text-sm font-semibold text-white">{col.title}</h4>
+              <ul className="space-y-2.5 text-sm">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-slate-400 transition-colors hover:text-white">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="border-t mt-8 pt-6 text-center text-sm text-gray-400">
+
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-slate-500">
           © {new Date().getFullYear()} Courier & Logistics Platform. All rights reserved.
         </div>
       </div>
