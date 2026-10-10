@@ -31,3 +31,5 @@ export const COURIER_NEXT_STATUS: Partial<Record<ShipmentStatus, ShipmentStatus[
 
 // Backend-এর commission rate-এর সাথে মেলাতে হবে
 export const COURIER_COMMISSION_RATE = 0.7;
+// Backend-এর pricing formula-র সাথে মেলাতে হবে (শুধু estimate)
+export const PRICING = { baseFee: 60, perKgRate: 15 } as const;
