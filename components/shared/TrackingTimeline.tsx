@@ -1,9 +1,17 @@
-import { ShipmentStatusHistoryItem } from '@/types';
+import { ShipmentStatus, ShipmentStatusHistoryItem } from '@/types';
 import { cn, formatDateTime } from '@/lib/utils';
 import EmptyState from './EmptyState';
 
+export interface TimelineItem {
+  id: string;
+  status: ShipmentStatus;
+  note?: string | null;
+  createdAt: string;
+  changedBy?: ShipmentStatusHistoryItem['changedBy'];
+}
+
 interface TrackingTimelineProps {
-  history: ShipmentStatusHistoryItem[];
+  history: TimelineItem[];
   showActor?: boolean;
 }
 
@@ -30,7 +38,9 @@ export default function TrackingTimeline({ history, showActor = true }: Tracking
               {item.note && <p className="text-xs text-gray-500">{item.note}</p>}
               <p className="text-xs text-gray-400 mt-0.5">
                 {formatDateTime(item.createdAt)}
-                {showActor && ` · ${item.changedBy.name} (${item.changedBy.role.toLowerCase()})`}
+                {showActor &&
+                  item.changedBy &&
+                  ` · ${item.changedBy.name} (${item.changedBy.role.toLowerCase()})`}
               </p>
             </div>
           </li>
