@@ -28,6 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import RouteTracker from '@/components/shared/RouteTracker';
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -46,10 +47,12 @@ export default function ShipmentDetailsPage() {
   const shipmentQuery = useQuery({
     queryKey: ['shipment', id],
     queryFn: () => getShipmentById(id),
+    refetchInterval: 15000,
   });
   const trackingQuery = useQuery({
     queryKey: ['tracking', id],
     queryFn: () => getShipmentTracking(id),
+    refetchInterval: 15000,
   });
   const { data: hubs = [] } = useQuery({ queryKey: ['hubs'], queryFn: getHubs });
 
@@ -119,6 +122,18 @@ export default function ShipmentDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
+                    <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Live Route</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RouteTracker
+                status={shipment.status}
+                originLabel={hubName(shipment.originHubId)}
+                destinationLabel={hubName(shipment.destinationHubId)}
+              />
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Shipment Details</CardTitle>
