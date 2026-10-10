@@ -28,7 +28,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import RouteTracker from '@/components/shared/RouteTracker';
+
+import RouteMap from '@/components/maps/RouteMap';
+import DeliveryCodeCard from '@/components/dashboard/DeliveryCodeCard';
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -122,15 +124,17 @@ export default function ShipmentDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-                    <Card>
+          <Card>
             <CardHeader>
               <CardTitle className="text-lg">Live Route</CardTitle>
             </CardHeader>
             <CardContent>
-              <RouteTracker
+              <RouteMap
                 status={shipment.status}
-                originLabel={hubName(shipment.originHubId)}
-                destinationLabel={hubName(shipment.destinationHubId)}
+                origin={hubs.find((h) => h.id === shipment.originHubId) ?? { name: 'Origin hub' }}
+                destination={
+                  hubs.find((h) => h.id === shipment.destinationHubId) ?? { name: 'Destination hub' }
+                }
               />
             </CardContent>
           </Card>
@@ -170,6 +174,7 @@ export default function ShipmentDetailsPage() {
         </div>
 
         <div className="space-y-6">
+          <DeliveryCodeCard shipmentId={shipment.id} status={shipment.status} />
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Payment</CardTitle>

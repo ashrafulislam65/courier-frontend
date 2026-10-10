@@ -6,6 +6,7 @@ import {
   ShipmentStatusHistoryItem,
   Zone,
   Hub,
+  
 } from '@/types';
 import { CreateShipmentFormValues } from '@/lib/validations/shipment.schema';
 
@@ -78,11 +79,19 @@ export const assignCourier = async (
 export const updateShipmentStatus = async (
   shipmentId: string,
   status: string,
-  note?: string
+  note?: string,
+  otp?: string
 ): Promise<Shipment> => {
   const res = await apiClient.patch<ApiSuccessResponse<Shipment>>(
     `/shipments/${shipmentId}/status`,
-    { status, note }
+    { status, note, otp }
+  );
+  return res.data.data;
+};
+
+export const getDeliveryCode = async (shipmentId: string): Promise<{ code: string }> => {
+  const res = await apiClient.get<ApiSuccessResponse<{ code: string }>>(
+    `/shipments/${shipmentId}/delivery-code`
   );
   return res.data.data;
 };

@@ -7,7 +7,7 @@ import { Loader2, PackageSearch, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { getPublicTracking } from '@/lib/api/tracking';
 import { getErrorMessage } from '@/lib/utils';
-import RouteTracker from '@/components/shared/RouteTracker';
+import RouteMap from '@/components/maps/RouteMap';
 import StatusBadge from '@/components/shared/StatusBadge';
 import TrackingTimeline from '@/components/shared/TrackingTimeline';
 import { Button } from '@/components/ui/button';
@@ -70,7 +70,11 @@ export default function TrackView() {
               <StatusBadge status={data.status} />
             </div>
 
-            <RouteTracker status={data.status} />
+                        <RouteMap
+              status={data.status}
+              origin={data.originHub ?? { name: 'Origin hub' }}
+              destination={data.destinationHub ?? { name: 'Destination hub' }}
+            />
 
             <div>
               <h2 className="mb-4 font-semibold">Tracking history</h2>

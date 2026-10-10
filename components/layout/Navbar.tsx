@@ -80,8 +80,10 @@ export default function Navbar() {
                   Login
                 </Button>
               </Link>
-              <Link href="/register">
-                <Button size="sm">Sign Up</Button>
+              <Link href="/#quote">
+                <Button size="sm" className="font-semibold uppercase tracking-wide">
+                  Get a quote
+                </Button>
               </Link>
             </>
           )}

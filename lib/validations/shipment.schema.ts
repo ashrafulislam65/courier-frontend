@@ -23,6 +23,7 @@ export const updateStatusSchema = z.object({
     'RETURN_TO_SENDER',
   ]),
   note: z.string().optional(),
+  otp: z.string().optional(),
 });
 
 export type UpdateStatusFormValues = z.infer<typeof updateStatusSchema>;

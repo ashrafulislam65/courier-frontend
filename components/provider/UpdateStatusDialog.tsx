@@ -15,6 +15,7 @@ import { getErrorMessage } from '@/lib/utils';
 import { Shipment } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -41,15 +42,24 @@ function StatusForm({ shipment, onDone }: { shipment: Shipment; onDone: () => vo
     control,
     register,
     handleSubmit,
+    watch,
+    setError,
     formState: { errors },
   } = useForm<UpdateStatusFormValues>({
     resolver: zodResolver(updateStatusSchema),
-    defaultValues: { status: options[0], note: '' },
+    defaultValues: { status: options[0], note: '', otp: '' },
   });
+
+  const selected = watch('status');
 
   const mutation = useMutation({
     mutationFn: (values: UpdateStatusFormValues) =>
-      updateShipmentStatus(shipment.id, values.status, values.note || undefined),
+      updateShipmentStatus(
+        shipment.id,
+        values.status,
+        values.note || undefined,
+        values.otp || undefined
+      ),
     onSuccess: () => {
       toast.success('Shipment status updated');
       queryClient.invalidateQueries({ queryKey: ['courier'] });
@@ -61,8 +71,16 @@ function StatusForm({ shipment, onDone }: { shipment: Shipment; onDone: () => vo
     onError: (error) => toast.error(getErrorMessage(error, 'Could not update status')),
   });
 
+  const onSubmit = (values: UpdateStatusFormValues) => {
+    if (values.status === 'DELIVERED' && !/^\d{4}$/.test(values.otp ?? '')) {
+      setError('otp', { message: 'Enter the 4-digit code the recipient gives you' });
+      return;
+    }
+    mutation.mutate(values);
+  };
+
   return (
-    <form onSubmit={handleSubmit((values) => mutation.mutate(values))} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex items-center justify-between text-sm">
         <span className="text-gray-500">Current status</span>
         <StatusBadge status={shipment.status} />
@@ -74,7 +92,10 @@ function StatusForm({ shipment, onDone }: { shipment: Shipment; onDone: () => vo
           control={control}
           name="status"
           render={({ field }) => (
-            <Select value={field.value} onValueChange={(value) => value && field.onChange(value)}>
+            <Select
+              value={field.value}
+              onValueChange={(value) => value && field.onChange(value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select next status" />
               </SelectTrigger>
@@ -88,8 +109,27 @@ function StatusForm({ shipment, onDone }: { shipment: Shipment; onDone: () => vo
             </Select>
           )}
         />
-        {errors.status && <p className="text-sm text-red-500 mt-1">{errors.status.message}</p>}
+        {errors.status && <p className="mt-1 text-sm text-red-500">{errors.status.message}</p>}
       </div>
+
+      {selected === 'DELIVERED' && (
+        <div className="rounded-lg bg-brand-50 p-4">
+          <Label htmlFor="otp">Delivery code</Label>
+          <Input
+            id="otp"
+            inputMode="numeric"
+            maxLength={4}
+            autoComplete="off"
+            placeholder="••••"
+            className="mt-1 text-center text-2xl font-bold tracking-[0.6em]"
+            {...register('otp')}
+          />
+          <p className="mt-1 text-xs text-neutral-600">
+            Ask the recipient for the 4-digit code shown in their account.
+          </p>
+          {errors.otp && <p className="mt-1 text-sm text-red-500">{errors.otp.message}</p>}
+        </div>
+      )}
 
       <div>
         <Label htmlFor="note">Note (optional)</Label>
@@ -101,7 +141,7 @@ function StatusForm({ shipment, onDone }: { shipment: Shipment; onDone: () => vo
           Cancel
         </Button>
         <Button type="submit" disabled={mutation.isPending || options.length === 0}>
-          {mutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+          {mutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Update Status
         </Button>
       </div>
@@ -125,10 +165,12 @@ export default function UpdateStatusDialog({
               <DialogTitle>Update Shipment Status</DialogTitle>
               <DialogDescription className="font-mono">{shipment.trackingCode}</DialogDescription>
             </DialogHeader>
-            <StatusForm key={shipment.id} shipment={shipment} onDone={onClose} />
+            <StatusForm key={shipment.id} shipment={shipment} onDone={onDone(onClose)} />
           </>
         )}
       </DialogContent>
     </Dialog>
   );
 }
+
+const onDone = (close: () => void) => close;
